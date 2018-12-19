@@ -35,12 +35,30 @@
 	`define SETY(pos, val) pos[5 +:5] = val
 	`define MAKE_POS(x, y) ( (y << (`POS_LEN>>1)) | x )
 	`define POS2ID(pos) (`GETY(pos)*`BOARD_W + `GETX(pos))
-	`define POS2EXP(pos) `POS2ID(pos)*`BRICK_LEN +: `BRICK_LEN
-	`define IS_VALID_POS(pos) `GETX(pos) <= `BOARD_W && `GETY(pos) <= `BOARD_H
+	`define POS2EXP(pos) `POS2ID(pos)*`BRICK_LEN +: `BRICK_LEN                   // get brick type from the board
+	`define IS_VALID_POS(pos) `GETX(pos) < `BOARD_W && `GETY(pos) < `BOARD_H
 
 	/* Each type of bricks has four blocks */
 	`define BRICK_POS_LEN `POS_LEN*4
 	`define BRICK_GET_POS(POSs, id) 	 POSs[id*`POS_LEN +: `POS_LEN] // id from 0 to 3
 	`define BRICK_SET_POS(POSs, id, val) POSs[id*`POS_LEN +: `POS_LEN] = val
+
+	/* Keyboard */
+	`define KEY_PRESS_LEN 7
+	`define KEY_UP      0
+	`define KEY_DOWN    1
+	`define KEY_LEFT    2
+	`define KEY_RIGHT   3
+	`define KEY_SPACE   4
+	`define KEY_RIGHT_1 5
+	`define KEY_RIGHT_3 6
+
+	`define KEY_UP_CODE    9'b0_0111_0101 // right_8 => 75
+	`define KEY_DOWN_CODE  9'b0_0111_0010 // E072
+	`define KEY_LEFT_CODE  9'b0_0110_1011 // E06B
+	`define KEY_RIGHT_CODE 9'b1_0111_0100 // E074 v
+	`define KEY_SPACE_CODE 9'b0_0010_1001 // 29   v
+	`define KEY_RIGHT_1_CODE 9'b0_0110_1001 // right_1 => 69
+	`define KEY_RIGHT_3_CODE 9'b0_0111_1010 // right_3 => 7A
 
 `endif

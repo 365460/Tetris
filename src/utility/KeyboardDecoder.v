@@ -42,11 +42,11 @@ module KeyboardDecoder(
 		.rst(rst),
 		.clk(clk)
 	);
-	
-	OnePulse op (
-		.signal_single_pulse(pulse_been_ready),
-		.signal(been_ready),
-		.clock(clk)
+
+	oneplus op (
+		.pb_1pulse(pulse_been_ready),
+		.pb_debounced(been_ready),
+		.clk(clk)
 	);
     
     always @ (posedge clk, posedge rst) begin
