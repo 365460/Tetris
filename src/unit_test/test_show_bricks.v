@@ -115,9 +115,6 @@ module test_show_bricks(
 
 	always @(*) begin
 		board = 0;
-		board[`POS2EXP(pos0)] = brick_type;
-		board[`POS2EXP(pos1)] = brick_type;
-		board[`POS2EXP(pos2)] = brick_type;
-		board[`POS2EXP(pos3)] = brick_type;
+		`PLACE_BLOCKS_TO_BOARD(board, `POS2ID(pos0), `POS2ID(pos1), `POS2ID(pos2), `POS2ID(pos3), brick_type);
 	end
 endmodule

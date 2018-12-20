@@ -21,12 +21,26 @@
 	/* board size */
 	`define BOARD_H 20
 	`define BOARD_W 12 // TOTAL BOARD_H * BOARD_W blocks in board
-	`define BOARD_SIZE `BOARD_H * `BOARD_W * `BRICK_LEN
+	// total bits = bits for each block to store brick_type + one bit for each block to represent if it is filled
+	`define BOARD_SIZE ((`BOARD_H * `BOARD_W * `BRICK_LEN) + (`BOARD_H * `BOARD_W))
 
-	`define GET_BLOCK(board, id) 	  board[id * `BRICK_LEN +: `BRICK_LEN]
-	`define SET_BLOCK(board, id, val) board[id * `BRICK_LEN +: `BRICK_LEN] = val
+	// return BRICK_LEN bits
+	`define GET_BLOCK_TYPE(board, id) 	   board[id * `BRICK_LEN +: `BRICK_LEN]
+	`define SET_BLOCK_TYPE(board, id, val) board[id * `BRICK_LEN +: `BRICK_LEN] = val
+	// return single bit
+	`define GET_BLOCK_FILL(board, id)      board[`BOARD_H * `BOARD_W * `BRICK_LEN + id]
+	`define SET_BLOCK_FILL(board, id, val) board[`BOARD_H * `BOARD_W * `BRICK_LEN + id] = val
+	// return BOARD_W bits
+	`define GET_ROW_FILL(board,  row)      board[`BOARD_H * `BOARD_W * `BRICK_LEN + row * `BOARD_W +: `BOARD_W]
+	`define PLACE_BLOCKS_TO_BOARD(board, id0, id1, id2, id3, val) `SET_BLOCK_TYPE(board, id0, val); \
+													   			  `SET_BLOCK_TYPE(board, id1, val); \
+													   			  `SET_BLOCK_TYPE(board, id2, val); \
+													   			  `SET_BLOCK_TYPE(board, id3, val); \
+													   			  `SET_BLOCK_FILL(board, id0, 1); \
+													   			  `SET_BLOCK_FILL(board, id1, 1); \
+													   			  `SET_BLOCK_FILL(board, id2, 1); \
+													   			  `SET_BLOCK_FILL(board, id3, 1); 
 
-	
 	/* 2D coordinate (x,y) */
 	`define POS_LEN 10 // wire [9:0] pos = 10'b_y(5 bits)_x(5 bits)
 	`define GETX(pos) pos[0 +:5]
@@ -35,10 +49,10 @@
 	`define SETY(pos, val) pos[5 +:5] = val
 	`define MAKE_POS(x, y) ( (y << (`POS_LEN>>1)) | x )
 	`define POS2ID(pos) (`GETY(pos)*`BOARD_W + `GETX(pos))
-	`define POS2EXP(pos) `POS2ID(pos)*`BRICK_LEN +: `BRICK_LEN                   // get brick type from the board
-	`define IS_VALID_POS(pos) `GETX(pos) < `BOARD_W && `GETY(pos) < `BOARD_H
+	//`define POS2EXP(pos) `POS2ID(pos)*`BRICK_LEN +: `BRICK_LEN                   // get brick type from the board.  decrepit!
+	`define IS_VALID_POS(pos) (`GETX(pos) < `BOARD_W && `GETY(pos) < `BOARD_H)
 
-	/* Each type of bricks has four blocks */
+	/* A structure to store the blocks of bricks. Each type of bricks has four blocks */
 	`define BRICK_POS_LEN `POS_LEN*4
 	`define BRICK_GET_POS(POSs, id) 	 POSs[id*`POS_LEN +: `POS_LEN] // id from 0 to 3
 	`define BRICK_SET_POS(POSs, id, val) POSs[id*`POS_LEN +: `POS_LEN] = val

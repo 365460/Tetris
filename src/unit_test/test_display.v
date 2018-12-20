@@ -33,21 +33,21 @@ module test_display(
 
 	always @(posedge rst) begin
 		if(rst == 1'b1) begin
-			`SET_BLOCK(board, 1, `BRICK_I);
-			`SET_BLOCK(board, 2, `BRICK_J);
-			`SET_BLOCK(board, 3, `BRICK_L);
-			`SET_BLOCK(board, 4, `BRICK_O);
-			`SET_BLOCK(board, 5, `BRICK_S);
-			`SET_BLOCK(board, 6, `BRICK_T);
-			`SET_BLOCK(board, 7, `BRICK_Z);
+			`SET_BLOCK_TYPE(board, 1, `BRICK_I);
+			`SET_BLOCK_TYPE(board, 2, `BRICK_J);
+			`SET_BLOCK_TYPE(board, 3, `BRICK_L);
+			`SET_BLOCK_TYPE(board, 4, `BRICK_O);
+			`SET_BLOCK_TYPE(board, 5, `BRICK_S);
+			`SET_BLOCK_TYPE(board, 6, `BRICK_T);
+			`SET_BLOCK_TYPE(board, 7, `BRICK_Z);
 
-			`SET_BLOCK(board, 31, `BRICK_I);
-			`SET_BLOCK(board, 32, `BRICK_J);
-			`SET_BLOCK(board, 33, `BRICK_L);
-			`SET_BLOCK(board, 34, `BRICK_O);
-			`SET_BLOCK(board, 35, `BRICK_S);
-			`SET_BLOCK(board, 36, `BRICK_T);
-			`SET_BLOCK(board, 37, `BRICK_Z);
+			`SET_BLOCK_TYPE(board, 31, `BRICK_I);
+			`SET_BLOCK_TYPE(board, 32, `BRICK_J);
+			`SET_BLOCK_TYPE(board, 33, `BRICK_L);
+			`SET_BLOCK_TYPE(board, 34, `BRICK_O);
+			`SET_BLOCK_TYPE(board, 35, `BRICK_S);
+			`SET_BLOCK_TYPE(board, 36, `BRICK_T);
+			`SET_BLOCK_TYPE(board, 37, `BRICK_Z);
 		end
 	end
 

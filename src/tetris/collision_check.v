@@ -25,6 +25,8 @@ module collision_check(
 
 	wire valid_pos;
 	assign valid_pos = `IS_VALID_POS(pos0) && `IS_VALID_POS(pos1) && `IS_VALID_POS(pos2) && `IS_VALID_POS(pos3);
-	assign is_collided = !(valid_pos && (board[`POS2EXP(pos0)]==0) && (board[`POS2EXP(pos1)]==0) 
-						&& (board[`POS2EXP(pos2)]==0) && (board[`POS2EXP(pos3)]==0));
+	//assign is_collided = !(valid_pos && (board[`POS2EXP(pos0)]==0) && (board[`POS2EXP(pos1)]==0) 
+						//&& (board[`POS2EXP(pos2)]==0) && (board[`POS2EXP(pos3)]==0));
+	assign is_collided = !(valid_pos && (`GET_BLOCK_FILL(board, `POS2ID(pos0)) == 0) && (`GET_BLOCK_FILL(board, `POS2ID(pos1)) == 0)
+					  && (`GET_BLOCK_FILL(board, `POS2ID(pos2)) == 0) && (`GET_BLOCK_FILL(board, `POS2ID(pos3)) == 0));
 endmodule

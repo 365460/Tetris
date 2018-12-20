@@ -92,10 +92,7 @@ module test_collision(
 	// add the current brick to the board
 	always @(*) begin
 		board = board_to;
-		board[`POS2EXP(pos0)] = brick_type;
-		board[`POS2EXP(pos1)] = brick_type;
-		board[`POS2EXP(pos2)] = brick_type;
-		board[`POS2EXP(pos3)] = brick_type;
+		`PLACE_BLOCKS_TO_BOARD(board, `POS2ID(pos0), `POS2ID(pos1), `POS2ID(pos2), `POS2ID(pos3), brick_type);
 	end
 
 	display display_inst(
@@ -208,10 +205,7 @@ module test_collision(
 
 			// place the current brick to the board_to
 			PLACE: begin
-				board_to_nx[`POS2EXP(pos0)] = brick_type;
-				board_to_nx[`POS2EXP(pos1)] = brick_type;
-				board_to_nx[`POS2EXP(pos2)] = brick_type;
-				board_to_nx[`POS2EXP(pos3)] = brick_type;
+				`PLACE_BLOCKS_TO_BOARD(board_to_nx, `POS2ID(pos0), `POS2ID(pos1), `POS2ID(pos2), `POS2ID(pos3), brick_type);
 
 				state_nx = WAIT;
 				// generate the new brick ( we haven't checked if the position of the new brick is valid. )

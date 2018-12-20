@@ -38,7 +38,7 @@ module display_playing(
 	assign idy  = (y_cnt - SY) / BLOCK_SIZE;
 	assign idyy = `BOARD_H - idy - 1; // reverse, our y is from bottom to top
 	assign id   = idx + idyy * `BOARD_W;
-	wire [`BRICK_LEN-1:0] block = `GET_BLOCK(board, id);
+	wire [`BRICK_LEN-1:0] block = `GET_BLOCK_TYPE(board, id);
 
 	wire [9:0] x = x_cnt - (SX + idx * BLOCK_SIZE);
 	wire [9:0] y = y_cnt - (SY + idy * BLOCK_SIZE);
