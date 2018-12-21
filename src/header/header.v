@@ -23,6 +23,7 @@
 	`define BOARD_W 12 // TOTAL BOARD_H * BOARD_W blocks in board
 	// total bits = bits for each block to store brick_type + one bit for each block to represent if it is filled
 	`define BOARD_SIZE ((`BOARD_H * `BOARD_W * `BRICK_LEN) + (`BOARD_H * `BOARD_W))
+    `define BOARD_WPLEN `BOARD_W * `BRICK_LEN
 
 	// return BRICK_LEN bits
 	`define GET_BLOCK_TYPE(board, id) 	   board[id * `BRICK_LEN +: `BRICK_LEN]
@@ -41,6 +42,9 @@
 													   			  `SET_BLOCK_FILL(board, id2, 1); \
 													   			  `SET_BLOCK_FILL(board, id3, 1); 
 
+    // return BOARD_W * BRICK_LEN bits
+    `define GET_ROW_TYPE(board, row)       board[row * `BOARD_WPLEN +: `BOARD_WPLEN]
+
 	/* 2D coordinate (x,y) */
 	`define POS_LEN 10 // wire [9:0] pos = 10'b_y(5 bits)_x(5 bits)
 	`define GETX(pos) pos[0 +:5]
@@ -56,6 +60,9 @@
 	`define BRICK_POS_LEN `POS_LEN*4
 	`define BRICK_GET_POS(POSs, id) 	 POSs[id*`POS_LEN +: `POS_LEN] // id from 0 to 3
 	`define BRICK_SET_POS(POSs, id, val) POSs[id*`POS_LEN +: `POS_LEN] = val
+
+    /* Line clearing mechanism */
+    `define CLEAR_LEN 3 // maximum clear 4 rows at a time
 
 	/* Keyboard */
 	`define KEY_PRESS_LEN 7
