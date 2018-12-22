@@ -100,43 +100,43 @@ module drop(
   wire [`POS_LEN-1:0] pos219 = pos2 - 19 * (1 << 5);
   wire [`POS_LEN-1:0] pos319 = pos3 - 19 * (1 << 5);
 
-  assign valid_pos1  =  1 > pos0 >> 5 && 1 > pos1 >> 5 && 1 > pos2 >> 5 && 1 > pos3 >> 5 ? 0 :                
+  assign valid_pos1  =  1 > pos0 >> 5 || 1 > pos1 >> 5 || 1 > pos2 >> 5 || 1 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos01) & `IS_VALID_POS(pos11) & `IS_VALID_POS(pos21) & `IS_VALID_POS(pos31);
-  assign valid_pos2  =  2 > pos0 >> 5 && 2 > pos1 >> 5 && 2 > pos2 >> 5 && 2 > pos3 >> 5 ? 0 :                
+  assign valid_pos2  =  2 > pos0 >> 5 || 2 > pos1 >> 5 || 2 > pos2 >> 5 || 2 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos02) & `IS_VALID_POS(pos12) & `IS_VALID_POS(pos22) & `IS_VALID_POS(pos32);
-  assign valid_pos3  =  3 > pos0 >> 5 && 3 > pos1 >> 5 && 3 > pos2 >> 5 && 3 > pos3 >> 5 ? 0 :                
+  assign valid_pos3  =  3 > pos0 >> 5 || 3 > pos1 >> 5 || 3 > pos2 >> 5 || 3 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos03) & `IS_VALID_POS(pos13) & `IS_VALID_POS(pos23) & `IS_VALID_POS(pos33);
-  assign valid_pos4  =  4 > pos0 >> 5 && 4 > pos1 >> 5 && 4 > pos2 >> 5 && 4 > pos3 >> 5 ? 0 :                
+  assign valid_pos4  =  4 > pos0 >> 5 || 4 > pos1 >> 5 || 4 > pos2 >> 5 || 4 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos04) & `IS_VALID_POS(pos14) & `IS_VALID_POS(pos24) & `IS_VALID_POS(pos34);
-  assign valid_pos5  =  5 > pos0 >> 5 && 5 > pos1 >> 5 && 5 > pos2 >> 5 && 5 > pos3 >> 5 ? 0 :                
+  assign valid_pos5  =  5 > pos0 >> 5 || 5 > pos1 >> 5 || 5 > pos2 >> 5 || 5 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos05) & `IS_VALID_POS(pos15) & `IS_VALID_POS(pos25) & `IS_VALID_POS(pos35);
-  assign valid_pos6  =  6 > pos0 >> 5 && 6 > pos1 >> 5 && 6 > pos2 >> 5 && 6 > pos3 >> 5 ? 0 :                
+  assign valid_pos6  =  6 > pos0 >> 5 || 6 > pos1 >> 5 || 6 > pos2 >> 5 || 6 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos06) & `IS_VALID_POS(pos16) & `IS_VALID_POS(pos26) & `IS_VALID_POS(pos36);
-  assign valid_pos7  =  7 > pos0 >> 5 && 7 > pos1 >> 5 && 7 > pos2 >> 5 && 7 > pos3 >> 5 ? 0 :                
+  assign valid_pos7  =  7 > pos0 >> 5 || 7 > pos1 >> 5 || 7 > pos2 >> 5 || 7 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos07) & `IS_VALID_POS(pos17) & `IS_VALID_POS(pos27) & `IS_VALID_POS(pos37);
-  assign valid_pos8  =  8 > pos0 >> 5 && 8 > pos1 >> 5 && 8 > pos2 >> 5 && 8 > pos3 >> 5 ? 0 :                
+  assign valid_pos8  =  8 > pos0 >> 5 || 8 > pos1 >> 5 || 8 > pos2 >> 5 || 8 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos08) & `IS_VALID_POS(pos18) & `IS_VALID_POS(pos28) & `IS_VALID_POS(pos38);
-  assign valid_pos9  =  9 > pos0 >> 5 && 9 > pos1 >> 5 && 9 > pos2 >> 5 && 9 > pos3 >> 5 ? 0 :                
+  assign valid_pos9  =  9 > pos0 >> 5 || 9 > pos1 >> 5 || 9 > pos2 >> 5 || 9 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos09) & `IS_VALID_POS(pos19) & `IS_VALID_POS(pos29) & `IS_VALID_POS(pos39);
-  assign valid_pos10 = 10 > pos0 >> 5 && 10 > pos1 >> 5 && 10 > pos2 >> 5 && 10 > pos3 >> 5 ? 0 :                
+  assign valid_pos10 = 10 > pos0 >> 5 || 10 > pos1 >> 5 || 10 > pos2 >> 5 || 10 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos010) & `IS_VALID_POS(pos110) & `IS_VALID_POS(pos210) & `IS_VALID_POS(pos311);
-  assign valid_pos11 = 11 > pos0 >> 5 && 11 > pos1 >> 5 && 11 > pos2 >> 5 && 11 > pos3 >> 5 ? 0 :                
+  assign valid_pos11 = 11 > pos0 >> 5 || 11 > pos1 >> 5 || 11 > pos2 >> 5 || 11 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos011) & `IS_VALID_POS(pos111) & `IS_VALID_POS(pos211) & `IS_VALID_POS(pos311);
-  assign valid_pos12 = 12 > pos0 >> 5 && 12 > pos1 >> 5 && 12 > pos2 >> 5 && 12 > pos3 >> 5 ? 0 :                
+  assign valid_pos12 = 12 > pos0 >> 5 || 12 > pos1 >> 5 || 12 > pos2 >> 5 || 12 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos012) & `IS_VALID_POS(pos112) & `IS_VALID_POS(pos212) & `IS_VALID_POS(pos312);
-  assign valid_pos13 = 13 > pos0 >> 5 && 13 > pos1 >> 5 && 13 > pos2 >> 5 && 13 > pos3 >> 5 ? 0 :                
+  assign valid_pos13 = 13 > pos0 >> 5 || 13 > pos1 >> 5 || 13 > pos2 >> 5 || 13 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos013) & `IS_VALID_POS(pos113) & `IS_VALID_POS(pos213) & `IS_VALID_POS(pos313);
-  assign valid_pos14 = 14 > pos0 >> 5 && 14 > pos1 >> 5 && 14 > pos2 >> 5 && 14 > pos3 >> 5 ? 0 :                
+  assign valid_pos14 = 14 > pos0 >> 5 || 14 > pos1 >> 5 || 14 > pos2 >> 5 || 14 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos014) & `IS_VALID_POS(pos114) & `IS_VALID_POS(pos214) & `IS_VALID_POS(pos314);
-  assign valid_pos15 = 15 > pos0 >> 5 && 15 > pos1 >> 5 && 15 > pos2 >> 5 && 15 > pos3 >> 5 ? 0 :                
+  assign valid_pos15 = 15 > pos0 >> 5 || 15 > pos1 >> 5 || 15 > pos2 >> 5 || 15 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos015) & `IS_VALID_POS(pos115) & `IS_VALID_POS(pos215) & `IS_VALID_POS(pos315);
-  assign valid_pos16 = 16 > pos0 >> 5 && 16 > pos1 >> 5 && 16 > pos2 >> 5 && 16 > pos3 >> 5 ? 0 :                
+  assign valid_pos16 = 16 > pos0 >> 5 || 16 > pos1 >> 5 || 16 > pos2 >> 5 || 16 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos016) & `IS_VALID_POS(pos116) & `IS_VALID_POS(pos216) & `IS_VALID_POS(pos316);
-  assign valid_pos17 = 17 > pos0 >> 5 && 17 > pos1 >> 5 && 17 > pos2 >> 5 && 17 > pos3 >> 5 ? 0 :                
+  assign valid_pos17 = 17 > pos0 >> 5 || 17 > pos1 >> 5 || 17 > pos2 >> 5 || 17 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos017) & `IS_VALID_POS(pos117) & `IS_VALID_POS(pos217) & `IS_VALID_POS(pos317);
-  assign valid_pos18 = 18 > pos0 >> 5 && 18 > pos1 >> 5 && 18 > pos2 >> 5 && 18 > pos3 >> 5 ? 0 :                
+  assign valid_pos18 = 18 > pos0 >> 5 || 18 > pos1 >> 5 || 18 > pos2 >> 5 || 18 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos018) & `IS_VALID_POS(pos118) & `IS_VALID_POS(pos218) & `IS_VALID_POS(pos318);
-  assign valid_pos19 = 19 > pos0 >> 5 && 19 > pos1 >> 5 && 19 > pos2 >> 5 && 19 > pos3 >> 5 ? 0 :                
+  assign valid_pos19 = 19 > pos0 >> 5 || 19 > pos1 >> 5 || 19 > pos2 >> 5 || 19 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos019) & `IS_VALID_POS(pos119) & `IS_VALID_POS(pos219) & `IS_VALID_POS(pos319);
 
   assign new_pos = !valid_pos1  ? pos -  0 * (1 << 5) :
