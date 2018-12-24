@@ -5,7 +5,7 @@
 * arrow: control the brick
 * right_1, right_3: change the brick type and direction
 */
-module test_collision(	
+module test_drop(	
 	input clk,
 	input rst,		// btnc
 
@@ -58,7 +58,9 @@ module test_collision(
 	reg [`BOARD_SIZE-1:0] board; // board_to + current brick(unplaced)
 
 	wire [`POS_LEN-1:0] pos1, pos2, pos3, pos0;
+	wire [`POS_LEN-1:0] drop_pos1, drop_pos2, drop_pos3, drop_pos0;
 	wire [`BRICK_POS_LEN-1:0] brick_pos; // store the positions of the current brick
+	wire [`BRICK_POS_LEN-1:0] drop_brick_pos; // store the positions of the current drop brick
 
 	reg[`POS_LEN-1:0] cur_pos, cur_pos_nx;
 	reg [`BRICK_LEN-1:0] brick_type, brick_type_nx;
@@ -71,8 +73,8 @@ module test_collision(
 	wire is_collided_nx;
 	reg is_collided;
 
-    wire drop_shift_nx;
-    reg drop_shift;
+    wire[`POS_LEN-1:0] drop_pos_nx;
+    reg [`POS_LEN-1:0] drop_pos;
 
 	localparam WAIT    = 2'd1;
 	localparam CAL_POS = 2'd0;
@@ -92,10 +94,17 @@ module test_collision(
 	assign pos2 = `BRICK_GET_POS(brick_pos, 2);
 	assign pos3 = `BRICK_GET_POS(brick_pos, 3);
 
-    assign spos0 = pos0 - drop_shift * 32;
-    assign spos1 = pos1 - drop_shift * 32;
-    assign spos2 = pos2 - drop_shift * 32;
-    assign spos3 = pos3 - drop_shift * 32;
+	brick inst_drop_brick(
+		.brick_type(brick_type),
+		.dir(dir),
+		.cur_pos(drop_pos),
+		.brick_pos(drop_brick_pos)
+	);
+
+	assign drop_pos0 = `BRICK_GET_POS(drop_brick_pos, 0);
+	assign drop_pos1 = `BRICK_GET_POS(drop_brick_pos, 1);
+	assign drop_pos2 = `BRICK_GET_POS(drop_brick_pos, 2);
+	assign drop_pos3 = `BRICK_GET_POS(drop_brick_pos, 3);
 
 	// add the current brick to the board
 	always @(*) begin
@@ -138,7 +147,7 @@ module test_collision(
         .pos(try_pos_nx),
         .brick_type(try_brick_type_nx),
         .dir(try_dir_nx),
-        .new_pos(drop_shift_nx)
+        .new_pos(drop_pos_nx)
     );
 
 	assign led[4] = !is_collided;
@@ -151,7 +160,7 @@ module test_collision(
 
 			is_collided <= 0;
             
-            drop_shift <= 0;
+            drop_pos <= 0; // ?
 
 			cur_pos <= `MAKE_POS(6, 10);
 			brick_type <= `BRICK_I;
@@ -168,7 +177,7 @@ module test_collision(
 
 			is_collided <= is_collided_nx;
 
-            drop_shift <= drop_shift_nx;
+            drop_pos <= drop_pos_nx;
 
 			cur_pos <= cur_pos_nx;
 			brick_type <= brick_type_nx;
@@ -225,7 +234,7 @@ module test_collision(
 
 			// place the current brick to the board_to
 			PLACE: begin
-				`PLACE_BLOCKS_TO_BOARD(board_to_nx, `POS2ID(spos0), `POS2ID(spos1), `POS2ID(spos2), `POS2ID(spos3), brick_type);
+				`PLACE_BLOCKS_TO_BOARD(board_to_nx, `POS2ID(drop_pos0), `POS2ID(drop_pos1), `POS2ID(drop_pos2), `POS2ID(drop_pos3), brick_type);
 
 				state_nx = WAIT;
 				// generate the new brick ( we haven't checked if the position of the new brick is valid. )
