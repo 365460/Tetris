@@ -6,7 +6,7 @@ module drop(
   input wire[`POS_LEN-1:0] pos,
   input wire[`BRICK_LEN-1:0] brick_type,
   input wire[`DIR_LEN-1:0] dir,
-  output wire[`BOARD_H-1:0] shift
+  output wire[`POS_LEN-1:0] new_pos
 );
 
   wire [`BRICK_POS_LEN-1:0] brick_pos;
@@ -102,80 +102,80 @@ module drop(
 
   assign valid_pos1  =  1 > pos0 >> 5 || 1 > pos1 >> 5 || 1 > pos2 >> 5 || 1 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos01) & `IS_VALID_POS(pos11) & `IS_VALID_POS(pos21) & `IS_VALID_POS(pos31) &
-                      `GET_BLOCK_FILL(cur_board, pos01) & `GET_BLOCK_FILL(cur_board, pos11) & `GET_BLOCK_FILL(cur_board, pos21) & `GET_BLOCK_FILL(cur_board, pos31);
+                      !`GET_BLOCK_FILL(cur_board, pos01) & !`GET_BLOCK_FILL(cur_board, pos11) & !`GET_BLOCK_FILL(cur_board, pos21) & !`GET_BLOCK_FILL(cur_board, pos31);
   assign valid_pos2  =  2 > pos0 >> 5 || 2 > pos1 >> 5 || 2 > pos2 >> 5 || 2 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos02) & `IS_VALID_POS(pos12) & `IS_VALID_POS(pos22) & `IS_VALID_POS(pos32) &
-                      `GET_BLOCK_FILL(cur_board, pos02) & `GET_BLOCK_FILL(cur_board, pos12) & `GET_BLOCK_FILL(cur_board, pos22) & `GET_BLOCK_FILL(cur_board, pos32);
+                      !`GET_BLOCK_FILL(cur_board, pos02) & !`GET_BLOCK_FILL(cur_board, pos12) & !`GET_BLOCK_FILL(cur_board, pos22) & !`GET_BLOCK_FILL(cur_board, pos32);
   assign valid_pos3  =  3 > pos0 >> 5 || 3 > pos1 >> 5 || 3 > pos2 >> 5 || 3 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos03) & `IS_VALID_POS(pos13) & `IS_VALID_POS(pos23) & `IS_VALID_POS(pos33) &
-                      `GET_BLOCK_FILL(cur_board, pos03) & `GET_BLOCK_FILL(cur_board, pos13) & `GET_BLOCK_FILL(cur_board, pos23) & `GET_BLOCK_FILL(cur_board, pos33);
+                      !`GET_BLOCK_FILL(cur_board, pos03) & !`GET_BLOCK_FILL(cur_board, pos13) & !`GET_BLOCK_FILL(cur_board, pos23) & !`GET_BLOCK_FILL(cur_board, pos33);
   assign valid_pos4  =  4 > pos0 >> 5 || 4 > pos1 >> 5 || 4 > pos2 >> 5 || 4 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos04) & `IS_VALID_POS(pos14) & `IS_VALID_POS(pos24) & `IS_VALID_POS(pos34) &
-                      `GET_BLOCK_FILL(cur_board, pos04) & `GET_BLOCK_FILL(cur_board, pos14) & `GET_BLOCK_FILL(cur_board, pos24) & `GET_BLOCK_FILL(cur_board, pos34);
+                      !`GET_BLOCK_FILL(cur_board, pos04) & !`GET_BLOCK_FILL(cur_board, pos14) & !`GET_BLOCK_FILL(cur_board, pos24) & !`GET_BLOCK_FILL(cur_board, pos34);
   assign valid_pos5  =  5 > pos0 >> 5 || 5 > pos1 >> 5 || 5 > pos2 >> 5 || 5 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos05) & `IS_VALID_POS(pos15) & `IS_VALID_POS(pos25) & `IS_VALID_POS(pos35) &
-                      `GET_BLOCK_FILL(cur_board, pos05) & `GET_BLOCK_FILL(cur_board, pos15) & `GET_BLOCK_FILL(cur_board, pos25) & `GET_BLOCK_FILL(cur_board, pos35);
+                      !`GET_BLOCK_FILL(cur_board, pos05) & !`GET_BLOCK_FILL(cur_board, pos15) & !`GET_BLOCK_FILL(cur_board, pos25) & !`GET_BLOCK_FILL(cur_board, pos35);
   assign valid_pos6  =  6 > pos0 >> 5 || 6 > pos1 >> 5 || 6 > pos2 >> 5 || 6 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos06) & `IS_VALID_POS(pos16) & `IS_VALID_POS(pos26) & `IS_VALID_POS(pos36) &
-                      `GET_BLOCK_FILL(cur_board, pos06) & `GET_BLOCK_FILL(cur_board, pos16) & `GET_BLOCK_FILL(cur_board, pos26) & `GET_BLOCK_FILL(cur_board, pos36);
+                      !`GET_BLOCK_FILL(cur_board, pos06) & !`GET_BLOCK_FILL(cur_board, pos16) & !`GET_BLOCK_FILL(cur_board, pos26) & !`GET_BLOCK_FILL(cur_board, pos36);
   assign valid_pos7  =  7 > pos0 >> 5 || 7 > pos1 >> 5 || 7 > pos2 >> 5 || 7 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos07) & `IS_VALID_POS(pos17) & `IS_VALID_POS(pos27) & `IS_VALID_POS(pos37) &
-                      `GET_BLOCK_FILL(cur_board, pos07) & `GET_BLOCK_FILL(cur_board, pos17) & `GET_BLOCK_FILL(cur_board, pos27) & `GET_BLOCK_FILL(cur_board, pos37);
+                      !`GET_BLOCK_FILL(cur_board, pos07) & !`GET_BLOCK_FILL(cur_board, pos17) & !`GET_BLOCK_FILL(cur_board, pos27) & !`GET_BLOCK_FILL(cur_board, pos37);
   assign valid_pos8  =  8 > pos0 >> 5 || 8 > pos1 >> 5 || 8 > pos2 >> 5 || 8 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos08) & `IS_VALID_POS(pos18) & `IS_VALID_POS(pos28) & `IS_VALID_POS(pos38) &
-                      `GET_BLOCK_FILL(cur_board, pos08) & `GET_BLOCK_FILL(cur_board, pos18) & `GET_BLOCK_FILL(cur_board, pos28) & `GET_BLOCK_FILL(cur_board, pos38);
+                      !`GET_BLOCK_FILL(cur_board, pos08) & !`GET_BLOCK_FILL(cur_board, pos18) & !`GET_BLOCK_FILL(cur_board, pos28) & !`GET_BLOCK_FILL(cur_board, pos38);
   assign valid_pos9  =  9 > pos0 >> 5 || 9 > pos1 >> 5 || 9 > pos2 >> 5 || 9 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos09) & `IS_VALID_POS(pos19) & `IS_VALID_POS(pos29) & `IS_VALID_POS(pos39) &
-                      `GET_BLOCK_FILL(cur_board, pos09) & `GET_BLOCK_FILL(cur_board, pos19) & `GET_BLOCK_FILL(cur_board, pos29) & `GET_BLOCK_FILL(cur_board, pos39);
+                      !`GET_BLOCK_FILL(cur_board, pos09) & !`GET_BLOCK_FILL(cur_board, pos19) & !`GET_BLOCK_FILL(cur_board, pos29) & !`GET_BLOCK_FILL(cur_board, pos39);
   assign valid_pos10 = 10 > pos0 >> 5 || 10 > pos1 >> 5 || 10 > pos2 >> 5 || 10 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos010) & `IS_VALID_POS(pos110) & `IS_VALID_POS(pos210) & `IS_VALID_POS(pos311) &
-                      `GET_BLOCK_FILL(cur_board, pos010) & `GET_BLOCK_FILL(cur_board, pos110) & `GET_BLOCK_FILL(cur_board, pos210) & `GET_BLOCK_FILL(cur_board, pos311);
+                      !`GET_BLOCK_FILL(cur_board, pos010) & !`GET_BLOCK_FILL(cur_board, pos110) & !`GET_BLOCK_FILL(cur_board, pos210) & !`GET_BLOCK_FILL(cur_board, pos311);
   assign valid_pos11 = 11 > pos0 >> 5 || 11 > pos1 >> 5 || 11 > pos2 >> 5 || 11 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos011) & `IS_VALID_POS(pos111) & `IS_VALID_POS(pos211) & `IS_VALID_POS(pos311) &
-                      `GET_BLOCK_FILL(cur_board, pos011) & `GET_BLOCK_FILL(cur_board, pos111) & `GET_BLOCK_FILL(cur_board, pos211) & `GET_BLOCK_FILL(cur_board, pos311);
+                      !`GET_BLOCK_FILL(cur_board, pos011) & !`GET_BLOCK_FILL(cur_board, pos111) & !`GET_BLOCK_FILL(cur_board, pos211) & !`GET_BLOCK_FILL(cur_board, pos311);
   assign valid_pos12 = 12 > pos0 >> 5 || 12 > pos1 >> 5 || 12 > pos2 >> 5 || 12 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos012) & `IS_VALID_POS(pos112) & `IS_VALID_POS(pos212) & `IS_VALID_POS(pos312) &
-                      `GET_BLOCK_FILL(cur_board, pos012) & `GET_BLOCK_FILL(cur_board, pos112) & `GET_BLOCK_FILL(cur_board, pos212) & `GET_BLOCK_FILL(cur_board, pos312);
+                      !`GET_BLOCK_FILL(cur_board, pos012) & !`GET_BLOCK_FILL(cur_board, pos112) & !`GET_BLOCK_FILL(cur_board, pos212) & !`GET_BLOCK_FILL(cur_board, pos312);
   assign valid_pos13 = 13 > pos0 >> 5 || 13 > pos1 >> 5 || 13 > pos2 >> 5 || 13 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos013) & `IS_VALID_POS(pos113) & `IS_VALID_POS(pos213) & `IS_VALID_POS(pos313) &
-                      `GET_BLOCK_FILL(cur_board, pos013) & `GET_BLOCK_FILL(cur_board, pos113) & `GET_BLOCK_FILL(cur_board, pos213) & `GET_BLOCK_FILL(cur_board, pos313);
+                      !`GET_BLOCK_FILL(cur_board, pos013) & !`GET_BLOCK_FILL(cur_board, pos113) & !`GET_BLOCK_FILL(cur_board, pos213) & !`GET_BLOCK_FILL(cur_board, pos313);
   assign valid_pos14 = 14 > pos0 >> 5 || 14 > pos1 >> 5 || 14 > pos2 >> 5 || 14 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos014) & `IS_VALID_POS(pos114) & `IS_VALID_POS(pos214) & `IS_VALID_POS(pos314) &
-                      `GET_BLOCK_FILL(cur_board, pos014) & `GET_BLOCK_FILL(cur_board, pos114) & `GET_BLOCK_FILL(cur_board, pos214) & `GET_BLOCK_FILL(cur_board, pos314);
+                      !`GET_BLOCK_FILL(cur_board, pos014) & !`GET_BLOCK_FILL(cur_board, pos114) & !`GET_BLOCK_FILL(cur_board, pos214) & !`GET_BLOCK_FILL(cur_board, pos314);
   assign valid_pos15 = 15 > pos0 >> 5 || 15 > pos1 >> 5 || 15 > pos2 >> 5 || 15 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos015) & `IS_VALID_POS(pos115) & `IS_VALID_POS(pos215) & `IS_VALID_POS(pos315) &
-                      `GET_BLOCK_FILL(cur_board, pos015) & `GET_BLOCK_FILL(cur_board, pos115) & `GET_BLOCK_FILL(cur_board, pos215) & `GET_BLOCK_FILL(cur_board, pos315);
+                      !`GET_BLOCK_FILL(cur_board, pos015) & !`GET_BLOCK_FILL(cur_board, pos115) & !`GET_BLOCK_FILL(cur_board, pos215) & !`GET_BLOCK_FILL(cur_board, pos315);
   assign valid_pos16 = 16 > pos0 >> 5 || 16 > pos1 >> 5 || 16 > pos2 >> 5 || 16 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos016) & `IS_VALID_POS(pos116) & `IS_VALID_POS(pos216) & `IS_VALID_POS(pos316) &
-                      `GET_BLOCK_FILL(cur_board, pos016) & `GET_BLOCK_FILL(cur_board, pos116) & `GET_BLOCK_FILL(cur_board, pos216) & `GET_BLOCK_FILL(cur_board, pos316);
+                      !`GET_BLOCK_FILL(cur_board, pos016) & !`GET_BLOCK_FILL(cur_board, pos116) & !`GET_BLOCK_FILL(cur_board, pos216) & !`GET_BLOCK_FILL(cur_board, pos316);
   assign valid_pos17 = 17 > pos0 >> 5 || 17 > pos1 >> 5 || 17 > pos2 >> 5 || 17 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos017) & `IS_VALID_POS(pos117) & `IS_VALID_POS(pos217) & `IS_VALID_POS(pos317) &
-                      `GET_BLOCK_FILL(cur_board, pos017) & `GET_BLOCK_FILL(cur_board, pos117) & `GET_BLOCK_FILL(cur_board, pos217) & `GET_BLOCK_FILL(cur_board, pos317);
+                      !`GET_BLOCK_FILL(cur_board, pos017) & !`GET_BLOCK_FILL(cur_board, pos117) & !`GET_BLOCK_FILL(cur_board, pos217) & !`GET_BLOCK_FILL(cur_board, pos317);
   assign valid_pos18 = 18 > pos0 >> 5 || 18 > pos1 >> 5 || 18 > pos2 >> 5 || 18 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos018) & `IS_VALID_POS(pos118) & `IS_VALID_POS(pos218) & `IS_VALID_POS(pos318) &
-                      `GET_BLOCK_FILL(cur_board, pos018) & `GET_BLOCK_FILL(cur_board, pos118) & `GET_BLOCK_FILL(cur_board, pos218) & `GET_BLOCK_FILL(cur_board, pos318);
+                      !`GET_BLOCK_FILL(cur_board, pos018) & !`GET_BLOCK_FILL(cur_board, pos118) & !`GET_BLOCK_FILL(cur_board, pos218) & !`GET_BLOCK_FILL(cur_board, pos318);
   assign valid_pos19 = 19 > pos0 >> 5 || 19 > pos1 >> 5 || 19 > pos2 >> 5 || 19 > pos3 >> 5 ? 0 :                
                       `IS_VALID_POS(pos019) & `IS_VALID_POS(pos119) & `IS_VALID_POS(pos219) & `IS_VALID_POS(pos319) &
-                      `GET_BLOCK_FILL(cur_board, pos019) & `GET_BLOCK_FILL(cur_board, pos119) & `GET_BLOCK_FILL(cur_board, pos219) & `GET_BLOCK_FILL(cur_board, pos319);
+                      !`GET_BLOCK_FILL(cur_board, pos019) & !`GET_BLOCK_FILL(cur_board, pos119) & !`GET_BLOCK_FILL(cur_board, pos219) & !`GET_BLOCK_FILL(cur_board, pos319);
 
-  assign shift   = !valid_pos1  ?  0 :
-                   !valid_pos2  ?  1 : 
-                   !valid_pos3  ?  2 : 
-                   !valid_pos4  ?  3 : 
-                   !valid_pos5  ?  4 : 
-                   !valid_pos6  ?  5 : 
-                   !valid_pos7  ?  6 : 
-                   !valid_pos8  ?  7 : 
-                   !valid_pos9  ?  8 : 
-                   !valid_pos10 ?  9 : 
-                   !valid_pos11 ? 10 : 
-                   !valid_pos12 ? 11 : 
-                   !valid_pos13 ? 12 : 
-                   !valid_pos14 ? 13 : 
-                   !valid_pos15 ? 14 : 
-                   !valid_pos16 ? 15 : 
-                   !valid_pos17 ? 16 : 
-                   !valid_pos18 ? 17 : 
-                   !valid_pos19 ? 18 : 19;
+  assign new_pos = !valid_pos1  ? pos -  0 * (1 << 5) :
+                   !valid_pos2  ? pos -  1 * (1 << 5) : 
+                   !valid_pos3  ? pos -  2 * (1 << 5) : 
+                   !valid_pos4  ? pos -  3 * (1 << 5) : 
+                   !valid_pos5  ? pos -  4 * (1 << 5) : 
+                   !valid_pos6  ? pos -  5 * (1 << 5) : 
+                   !valid_pos7  ? pos -  6 * (1 << 5) : 
+                   !valid_pos8  ? pos -  7 * (1 << 5) : 
+                   !valid_pos9  ? pos -  8 * (1 << 5) : 
+                   !valid_pos10 ? pos -  9 * (1 << 5) : 
+                   !valid_pos11 ? pos - 10 * (1 << 5) : 
+                   !valid_pos12 ? pos - 11 * (1 << 5) : 
+                   !valid_pos13 ? pos - 12 * (1 << 5) : 
+                   !valid_pos14 ? pos - 13 * (1 << 5) : 
+                   !valid_pos15 ? pos - 14 * (1 << 5) : 
+                   !valid_pos16 ? pos - 15 * (1 << 5) : 
+                   !valid_pos17 ? pos - 16 * (1 << 5) : 
+                   !valid_pos18 ? pos - 17 * (1 << 5) : 
+                   !valid_pos19 ? pos - 18 * (1 << 5) : pos - 19 * (1 << 5);
 
 endmodule
