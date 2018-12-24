@@ -5,7 +5,7 @@
 * arrow: control the brick
 * right_1, right_3: change the brick type and direction
 */
-module test_collision(	
+module test_clear(	
 	input clk,
 	input rst,		// btnc
 
@@ -74,6 +74,7 @@ module test_collision(
 	localparam WAIT    = 2'd1;
 	localparam CAL_POS = 2'd0;
 	localparam PLACE   = 2'd2;
+    localparam CLEAR   = 2'd3;
 
 	reg [1:0] state, state_nx;
 
@@ -124,6 +125,14 @@ module test_collision(
 		.dir(try_dir_nx),
 		.is_collided(is_collided_nx)
 	);
+
+    wire[`CLEAR_LEN-1:0] num_cleared;
+    wire[`BOARD_SIZE-1:0] cleared_board;
+    clear inst_clear(
+        .cur_board(board_to),
+        .num_to_clear(num_cleard),
+        .nxt_board(cleared_board)
+    );
 
 	assign led[4] = !is_collided;
 
@@ -207,10 +216,15 @@ module test_collision(
 			PLACE: begin
 				`PLACE_BLOCKS_TO_BOARD(board_to_nx, `POS2ID(pos0), `POS2ID(pos1), `POS2ID(pos2), `POS2ID(pos3), brick_type);
 
-				state_nx = WAIT;
+				state_nx = CLEAR;
 				// generate the new brick ( we haven't checked if the position of the new brick is valid. )
-				{cur_pos_nx, dir_nx, brick_type_nx} = {`MAKE_POS(6, 18), `DIR_LEN'b0, `BRICK_I};
 			end
+            CLEAR: begin
+                board_to_nx <= cleared_board;
+
+                state_nx = WAIT;
+				{cur_pos_nx, dir_nx, brick_type_nx} = {`MAKE_POS(6, 18), `DIR_LEN'b0, `BRICK_I};
+            end
 		endcase
 	end
 
