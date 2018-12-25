@@ -129,6 +129,8 @@ module test_clear(
     wire[`CLEAR_LEN-1:0] num_cleared;
     wire[`BOARD_SIZE-1:0] cleared_board;
     clear inst_clear(
+        .clk(clk_div16),
+        .rst(rst_1plus),
         .cur_board(board_to),
         .num_to_clear(num_cleard),
         .nxt_board(cleared_board)
