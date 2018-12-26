@@ -129,10 +129,10 @@ module test_clear(
     wire[`CLEAR_LEN-1:0] num_cleared;
     wire[`BOARD_SIZE-1:0] cleared_board;
     clear inst_clear(
-        .clk(clk_div16),
-        .rst(rst_1plus),
+        .clk(clk),
+        .rst(state == PLACE | rst_1plus),
         .cur_board(board_to),
-        .num_to_clear(num_cleard),
+        .num_to_clear(num_cleared),
         .nxt_board(cleared_board)
     );
 
@@ -153,8 +153,7 @@ module test_clear(
 			try_pos<= `MAKE_POS(6, 10);
 			try_brick_type <= `BRICK_I;
 			try_dir <= 0;
-		end
-		else begin
+		end else begin
 			state <= state_nx;
 
 			board_to <= board_to_nx;
@@ -222,7 +221,7 @@ module test_clear(
 				// generate the new brick ( we haven't checked if the position of the new brick is valid. )
 			end
             CLEAR: begin
-                board_to_nx <= cleared_board;
+                board_to_nx = cleared_board;
 
                 state_nx = WAIT;
 				{cur_pos_nx, dir_nx, brick_type_nx} = {`MAKE_POS(6, 18), `DIR_LEN'b0, `BRICK_I};
