@@ -23,18 +23,6 @@ module test_show_bricks(
 	reg [`BOARD_SIZE-1:0] board;
 	wire[`STATE_LEN-1:0] state = `PLAYING;
 
-	display display_inst(
-		.clk(clk),
-		.rst(rst),
-		.state(state),
-		.board(board),
-		.vgaRed(vgaRed),
-		.vgaGreen(vgaGreen),
-		.vgaBlue(vgaBlue),
-		.hsync(hsync),
-		.vsync(vsync)
-	);
-
 	wire clk_div16, clk_div22;
 	clock_divider #(.n(16)) inst_div16(clk, clk_div16);
 	clock_divider #(.n(22)) inst_div22(clk, clk_div22);
@@ -106,6 +94,21 @@ module test_show_bricks(
 		.dir(dir),
 		.cur_pos(cur_pos),
 		.brick_pos(brick_pos)
+	);
+
+	display display_inst(
+		.clk(clk),
+		.rst(rst),
+		.state(state),
+		.board(board),
+		.cur_brick_type(brick_type),
+		.cur_brick_pos(brick_pos),
+		.shadow_brick_pos(-1),
+		.vgaRed(vgaRed),
+		.vgaGreen(vgaGreen),
+		.vgaBlue(vgaBlue),
+		.hsync(hsync),
+		.vsync(vsync)
 	);
 
 	assign pos0 = `BRICK_GET_POS(brick_pos, 0);

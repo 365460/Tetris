@@ -23,6 +23,9 @@ module test_display(
 		.clk(clk),
 		.rst(rst),
 		.state(state),
+		.cur_brick_type(-1),
+		.cur_brick_pos(-1),
+		.shadow_brick_pos(-1),
 		.board(board),
 		.vgaRed(vgaRed),
 		.vgaGreen(vgaGreen),
@@ -33,21 +36,21 @@ module test_display(
 
 	always @(posedge rst) begin
 		if(rst == 1'b1) begin
-			`SET_BLOCK_TYPE(board, 1, `BRICK_I);
-			`SET_BLOCK_TYPE(board, 2, `BRICK_J);
-			`SET_BLOCK_TYPE(board, 3, `BRICK_L);
-			`SET_BLOCK_TYPE(board, 4, `BRICK_O);
-			`SET_BLOCK_TYPE(board, 5, `BRICK_S);
-			`SET_BLOCK_TYPE(board, 6, `BRICK_T);
-			`SET_BLOCK_TYPE(board, 7, `BRICK_Z);
+			`SET_BLOCK_FILL(board, 1, 1);
+			`SET_BLOCK_FILL(board, 2, 1);
+			`SET_BLOCK_FILL(board, 3, 1);
+			`SET_BLOCK_FILL(board, 4, 1);
+			`SET_BLOCK_FILL(board, 5, 1);
+			`SET_BLOCK_FILL(board, 6, 1);
+			`SET_BLOCK_FILL(board, 7, 1);
 
-			`SET_BLOCK_TYPE(board, 31, `BRICK_I);
-			`SET_BLOCK_TYPE(board, 32, `BRICK_J);
-			`SET_BLOCK_TYPE(board, 33, `BRICK_L);
-			`SET_BLOCK_TYPE(board, 34, `BRICK_O);
-			`SET_BLOCK_TYPE(board, 35, `BRICK_S);
-			`SET_BLOCK_TYPE(board, 36, `BRICK_T);
-			`SET_BLOCK_TYPE(board, 37, `BRICK_Z);
+			`SET_BLOCK_FILL(board, 31, 1);
+			`SET_BLOCK_FILL(board, 32, 1);
+			`SET_BLOCK_FILL(board, 33, 1);
+			`SET_BLOCK_FILL(board, 34, 1);
+			`SET_BLOCK_FILL(board, 35, 1);
+			`SET_BLOCK_FILL(board, 36, 1);
+			`SET_BLOCK_FILL(board, 37, 1);
 		end
 	end
 

@@ -5,6 +5,9 @@ module display(
 	input wire rst,
 	input wire[`STATE_LEN-1:0] state,
 	input wire[`BOARD_SIZE-1:0] board,
+	input wire[`BRICK_LEN-1:0] cur_brick_type,
+	input wire[`BRICK_POS_LEN-1:0] cur_brick_pos,
+	input wire[`BRICK_POS_LEN-1:0] shadow_brick_pos,
 
 	output reg [3:0] vgaRed,
 	output reg [3:0] vgaGreen,
@@ -35,6 +38,9 @@ module display(
 		.board(board),
 		.x_cnt(x_cnt),
 		.y_cnt(y_cnt),
+		.cur_brick_type(cur_brick_type),
+		.cur_brick_pos(cur_brick_pos),
+		.shadow_brick_pos(shadow_brick_pos),
 		.vgaRed(vgaRed_playing),
 		.vgaGreen(vgaGreen_playing),
 		.vgaBlue(vgaBlue_playing)

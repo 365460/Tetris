@@ -7,14 +7,15 @@
 	`define PLAYING `STATE_LEN'd1
 
 	/* Brick */
-	`define BRICK_LEN 3
-	`define BRICK_I 3'd1
-	`define BRICK_J 3'd2
-	`define BRICK_L 3'd3
-	`define BRICK_O 3'd4
-	`define BRICK_S 3'd5
-	`define BRICK_T 3'd6
-	`define BRICK_Z 3'd7
+	`define BRICK_LEN 4
+	`define BRICK_I `BRICK_LEN'd1
+	`define BRICK_J `BRICK_LEN'd2
+	`define BRICK_L `BRICK_LEN'd3
+	`define BRICK_O `BRICK_LEN'd4
+	`define BRICK_S `BRICK_LEN'd5
+	`define BRICK_T `BRICK_LEN'd6
+	`define BRICK_Z `BRICK_LEN'd7
+	`define BRICK_SHADOW `BRICK_LEN'd8
 
 	`define DIR_LEN 2
 
@@ -22,24 +23,20 @@
 	`define BOARD_H 20
 	`define BOARD_W 12 // TOTAL BOARD_H * BOARD_W blocks in board
 	// total bits = bits for each block to store brick_type + one bit for each block to represent if it is filled
-	`define BOARD_SIZE ((`BOARD_H * `BOARD_W * `BRICK_LEN) + (`BOARD_H * `BOARD_W))
+	`define BOARD_SIZE (`BOARD_H * `BOARD_W )
 
-	// return BRICK_LEN bits
-	`define GET_BLOCK_TYPE(board, id) 	   board[id * `BRICK_LEN +: `BRICK_LEN]
-	`define SET_BLOCK_TYPE(board, id, val) board[id * `BRICK_LEN +: `BRICK_LEN] = val
-	// return single bit
-	`define GET_BLOCK_FILL(board, id)      board[`BOARD_H * `BOARD_W * `BRICK_LEN + id]
-	`define SET_BLOCK_FILL(board, id, val) board[`BOARD_H * `BOARD_W * `BRICK_LEN + id] = val
+	//`define GET_BLOCK_TYPE(board, id) 	   board[id * `BRICK_LEN +: `BRICK_LEN]
+	//`define SET_BLOCK_TYPE(board, id, val) board[id * `BRICK_LEN +: `BRICK_LEN] = val
+	`define GET_BLOCK_FILL(board, id)      board[id]
+	`define SET_BLOCK_FILL(board, id, val) board[id] = val
+	`define IS_ALL_BLOCK_FREE(board, id0, id1, id2, id3) \
+		((`GET_BLOCK_FILL(board, id0)==0) && (`GET_BLOCK_FILL(board, id1)==0) && (`GET_BLOCK_FILL(board, id2)==0) && (`GET_BLOCK_FILL(board, id3)==0))
 	// return BOARD_W bits
-	`define GET_ROW_FILL(board,  row)      board[`BOARD_H * `BOARD_W * `BRICK_LEN + row * `BOARD_W +: `BOARD_W]
-	`define PLACE_BLOCKS_TO_BOARD(board, id0, id1, id2, id3, val) `SET_BLOCK_TYPE(board, id0, val); \
-													   			  `SET_BLOCK_TYPE(board, id1, val); \
-													   			  `SET_BLOCK_TYPE(board, id2, val); \
-													   			  `SET_BLOCK_TYPE(board, id3, val); \
-													   			  `SET_BLOCK_FILL(board, id0, 1); \
-													   			  `SET_BLOCK_FILL(board, id1, 1); \
-													   			  `SET_BLOCK_FILL(board, id2, 1); \
-													   			  `SET_BLOCK_FILL(board, id3, 1); 
+	`define GET_ROW_FILL(board,  row)      board[row * `BOARD_W +: `BOARD_W]
+	`define PLACE_BLOCKS_TO_BOARD(board, id0, id1, id2, id3, val) `SET_BLOCK_FILL(board, id0, 1); \
+																	 `SET_BLOCK_FILL(board, id1, 1); \
+																	 `SET_BLOCK_FILL(board, id2, 1); \
+																	 `SET_BLOCK_FILL(board, id3, 1); 
 
 	/* 2D coordinate (x,y) */
 	`define POS_LEN 10 // wire [9:0] pos = 10'b_y(5 bits)_x(5 bits)
