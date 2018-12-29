@@ -146,7 +146,7 @@ module test_clear(
 		.is_collided(is_collided_nx)
 	);
 	
-	wire[2:0] num_to_clear;
+	wire[4:0] num_to_clear;
 	wire[`BOARD_SIZE-1:0] cleared_board;
 	
 	clear inst_clear(
