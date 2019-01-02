@@ -54,6 +54,8 @@
 	`define BRICK_GET_POS(POSs, id) 	 POSs[id*`POS_LEN +: `POS_LEN] // id from 0 to 3
 	`define BRICK_SET_POS(POSs, id, val) POSs[id*`POS_LEN +: `POS_LEN] = val
 
+	`define NEW_BLOCK_POS `MAKE_POS(6, 18)
+
 	/* Keyboard */
 	`define KEY_PRESS_LEN 7
 	`define KEY_UP      0
