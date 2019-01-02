@@ -69,7 +69,9 @@ module test_random(
 	reg [`DIR_LEN-1:0] try_dir, try_dir_nx;
 
 	wire [`POS_LEN-1:0] shadow_pos;
-	wire [`BRICK_LEN-1:0] next_brick_type;
+
+	reg [`BRICK_LEN-1:0] next_brick_type, next_brick_type_nx;
+	wire [`BRICK_LEN-1:0] ra_brick_type;
 
 	wire is_collided_nx, is_collided_next_nx;
 	reg is_collided, is_collided_next;
@@ -79,11 +81,12 @@ module test_random(
 	
 	reg [2:0] state, state_nx;
 
-	localparam WAIT          = 3'd0;
-	localparam CAL_POS       = 3'd1;
-	localparam PLACE         = 3'd2;
-	localparam CLEAR         = 3'd3;
-	localparam GEN_NEW_BLOCK = 3'd4;
+	localparam WAIT           = 3'd0;
+	localparam CAL_POS        = 3'd1;
+	localparam PLACE          = 3'd2;
+	localparam CLEAR          = 3'd3;
+	localparam GEN_NEW_BLOCK  = 3'd4;
+	localparam JUDGE_GAMEOVER = 3'd5;
 
 	display display_inst(
 		.clk(clk),
@@ -137,7 +140,7 @@ module test_random(
 	random_number #(.LENGTH(`BRICK_LEN-1), .FROM(1), .TO(7)) inst_random_number(
 		.rst(rst_1plus),
 		.clk(clk),
-		.num(next_brick_type)
+		.num(ra_brick_type)
 	);
 
 	collision_check inst_collision_check(
@@ -190,6 +193,8 @@ module test_random(
 			try_pos <= `MAKE_POS(6, 10);
 			try_brick_type <= `BRICK_I;
 			try_dir <= 0;
+
+			next_brick_type <= 1;
 		end
 		else begin
 			state <= state_nx;
@@ -206,6 +211,8 @@ module test_random(
 			try_pos <= try_pos_nx;
 			try_brick_type <= try_brick_type_nx;
 			try_dir <= try_dir_nx;
+
+			next_brick_type <= next_brick_type_nx;
 		end
 	end
 
@@ -216,6 +223,8 @@ module test_random(
 
 		state_nx = state;
 		board_nx = board;
+
+		next_brick_type_nx = next_brick_type;
 
 		case(state) 
 			WAIT: begin
@@ -254,14 +263,22 @@ module test_random(
 			end
 
 			CLEAR: begin
-			    state_nx = GEN_NEW_BLOCK;
 			    board_nx = cleared_board;
+			    state_nx = GEN_NEW_BLOCK;
 			end
 
 			GEN_NEW_BLOCK: begin
-				if(is_collided_next == 0) {cur_pos_nx, dir_nx, brick_type_nx} = {`NEW_BLOCK_POS, `DIR_LEN'b0, next_brick_type};
-				else begin
+				next_brick_type_nx = ra_brick_type;
+				state_nx = JUDGE_GAMEOVER;
+			end
+
+			JUDGE_GAMEOVER: begin
+				if(is_collided_next) begin
+					// game over
 					board_nx = 0;
+					{cur_pos_nx, dir_nx, brick_type_nx} = {`NEW_BLOCK_POS, `DIR_LEN'b0, next_brick_type};
+				end
+				else begin
 					{cur_pos_nx, dir_nx, brick_type_nx} = {`NEW_BLOCK_POS, `DIR_LEN'b0, next_brick_type};
 				end
 
