@@ -74,4 +74,16 @@
 	`define KEY_RIGHT_1_CODE 9'b0_0110_1001 // right_1 => 69
 	`define KEY_RIGHT_3_CODE 9'b0_0111_1010 // right_3 => 7A
 
+	/* Level */
+	`define  LEVEL_LEN 3
+
+	/* Event */
+	`define EVENT_LEN       6
+	`define EVENT_KEY_UP    0
+	`define EVENT_KEY_DOWN  1
+	`define EVENT_KEY_RIGHT 2
+	`define EVENT_KEY_LEFT  3
+	`define EVENT_KEY_SPACE 4
+	`define EVENT_FALL      5
+
 `endif
