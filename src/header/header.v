@@ -75,7 +75,7 @@
 	`define KEY_RIGHT_3_CODE 9'b0_0111_1010 // right_3 => 7A
 
 	/* Level */
-	`define  LEVEL_LEN 3
+	`define  LEVEL_LEN 4
 
 	/* Event */
 	`define EVENT_LEN       6
