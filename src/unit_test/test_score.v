@@ -60,11 +60,9 @@ module test_score(
 	wire [4:0] num_to_clear;
 	wire [`BOARD_SIZE-1:0] cleared_board;
 
-    wire [13:0] score_nx;
-    reg [13:0] score; // score affects level, level affects speed
-    wire [1:0] streaks_nx;
-    reg [1:0] streaks; // done x clears in a row, then score += [3, x].min + cleared_line
-    wire [3:0] cur_level = score / 20 < 16 ? score / 20 : 15;
+    reg [13:0] score, score_nx; // score affects level, level affects speed
+    reg [1:0] streaks, streaks_nx; // done x clears in a row, then score += [3, x].min + cleared_line
+    wire [`LEVEL_LEN-1:0] cur_level = score / 20 < 16 ? score / 20 : 15;
 	
 	reg [2:0] state, state_nx;
 
@@ -111,10 +109,10 @@ module test_score(
 		.DISPLAY(DISPLAY),
 		.DIGIT(DIGIT),
 		.clk(clk_div16),
-		.dig1(score / 1000),
-		.dig2(score / 100 % 10),
-		.dig3(score / 10 % 10),
-		.dig4(score % 10)
+		.dig4(score / 1000),
+		.dig3(score / 100 % 10),
+		.dig2(score / 10 % 10),
+		.dig1(score % 10)
 	);
 
 	brick inst_brick(
