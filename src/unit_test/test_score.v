@@ -12,7 +12,7 @@ module test_score(
 	inout PS2CLK,
 	inout PS2DATA,
 
-	input [1:0] SW,
+	input [15:0] SW,
 	output [15:0] led,
 	output [3:0] DIGIT,
 	output [6:0] DISPLAY,
@@ -25,8 +25,8 @@ module test_score(
 	output wire vsync
 );
 	wire main_clk, clk_div16, key_sensitive_clk;
-	clock_divider #(.n(13)) inst_clk_div16(clk, clk_div16);
-	clock_divider #(.n(15)) inst_clk_main(clk, main_clk);
+	clock_divider #(.n(12)) inst_clk_div16(clk, clk_div16);
+	clock_divider #(.n(13)) inst_clk_main(clk, main_clk);
 	clock_divider #(.n(23)) inst_clk_key(clk, key_sensitive_clk);
 
 	// btn: rst
@@ -62,8 +62,15 @@ module test_score(
 
     reg [13:0] score, score_nx; // score affects level, level affects speed
     reg [1:0] streaks, streaks_nx; // done x clears in a row, then score += [3, x].min + cleared_line
-    wire [`LEVEL_LEN-1:0] cur_level = score / 20 < 16 ? score / 20 : 15;
+    reg [`LEVEL_LEN-1:0] cur_level;
 	
+	wire [`LEVEL_LEN-1:0] debug_level = {SW[3], SW[2], SW[1], SW[0]};
+	always @(*) begin
+		if( (score / 20) + debug_level < 16) cur_level = score/20 + debug_level;
+		else if( (score/20) < 16) cur_level = score/20;
+		else cur_level = 15;
+	end
+
 	reg [2:0] state, state_nx;
 
 	localparam WAIT           = 3'd0;
@@ -72,6 +79,7 @@ module test_score(
 	localparam CLEAR          = 3'd3;
 	localparam GEN_NEW_BLOCK  = 3'd4;
 	localparam JUDGE_GAMEOVER = 3'd5;
+	localparam START          = 3'd6;
 
 	reg [`EVENT_LEN-1:0] event_received, event_received_nx;
 	wire [`EVENT_LEN-1:0] event_out;
@@ -88,15 +96,19 @@ module test_score(
 		.event_out(event_out)
 	);
 
+	wire[`STATE_LEN-1:0] display_state;
+	assign display_state = (state == START? `START:`PLAYING);
+
 	display display_inst(
 		.clk(clk),
 		.rst(rst),
-		.state(`PLAYING),
+		.state(display_state),
 
 		.board(board),
 		.cur_brick_type(brick_type),
 		.cur_brick_pos(brick_pos),
 		.shadow_brick_pos(shadow_brick_pos),
+		.level(cur_level),
 
 		.vgaRed(vgaRed),
 		.vgaGreen(vgaGreen),
@@ -154,7 +166,7 @@ module test_score(
 	collision_check inst_collision_check_next_block(
 		.board(board),
 		.pos(`NEW_BLOCK_POS),
-		.brick_type(next_brick_type),
+		.brick_type(next_brick_type_nx),
 		.dir(0),
 		.is_collided(is_collided_next_nx)
 	);
@@ -194,7 +206,7 @@ module test_score(
                 
 	always @(posedge main_clk or posedge rst_1plus) begin
 		if(rst_1plus == 1'b1) begin
-			state <= WAIT;
+			state <= START;
 
 			board <= 0;
 
@@ -256,6 +268,13 @@ module test_score(
 
 		event_received_nx = 0;
 		case(state) 
+			START: begin
+				if(event_out[`EVENT_KEY_SPACE]) begin
+					event_received_nx[`EVENT_KEY_SPACE] = 1;
+
+					state_nx = WAIT;
+				end
+			end
 			WAIT: begin
 				if(event_out[`EVENT_KEY_UP]) begin    // rotate the brick
 					try_dir_nx = dir + 1;
@@ -328,12 +347,13 @@ module test_score(
                     score_nx = 0;
                     streaks_nx = 0;
 					{cur_pos_nx, dir_nx, brick_type_nx} = {`NEW_BLOCK_POS, `DIR_LEN'b0, next_brick_type};
+					state_nx = START;
 				end
 				else begin
 					{cur_pos_nx, dir_nx, brick_type_nx} = {`NEW_BLOCK_POS, `DIR_LEN'b0, next_brick_type};
+					state_nx = WAIT;
 				end
 
-				state_nx = WAIT;
 			end
 		endcase
 	end

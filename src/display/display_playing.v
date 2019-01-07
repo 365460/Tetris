@@ -1,10 +1,14 @@
 `include "header.v"
 
 module display_playing(
+	input wire clk,
+	input wire rst,
+
 	input wire[`BOARD_SIZE-1:0] board,
 	input wire[`BRICK_LEN-1:0] cur_brick_type,
 	input wire[`BRICK_POS_LEN-1:0] cur_brick_pos,
 	input wire[`BRICK_POS_LEN-1:0] shadow_brick_pos,
+	input wire[`LEVEL_LEN-1:0] level,
 	input wire [9:0] x_cnt,
 	input wire [9:0] y_cnt,
 
@@ -64,12 +68,59 @@ module display_playing(
 		else block_color_id = 0;
 	end
 
+	reg [4:0] index, index_nx;
+	reg [33:0] cnt, cnt_nx;
+
+	always @(posedge clk or posedge rst) begin
+		if(rst) begin
+			cnt = 0;
+			index = 0;
+		end
+		else begin
+			cnt = cnt_nx;
+			index = index_nx;
+		end
+	end
+
+    localparam [33:0] SPEED[0:14] = {
+		100_000_00*5,
+		 90_000_00*5,
+		 80_000_00*5,
+		 70_000_00*5,
+		 60_000_00*5,
+		 50_000_00*5,
+		 40_000_00*5,
+		 30_000_00*5,
+		 20_000_00*5,
+		 10_000_00*5,
+		  9_000_00*5,
+		  8_000_00*5,
+		  7_000_00*5,
+		  6_000_00*5,
+		  5_000_00*5
+	};
+
+	always @(*) begin
+		index_nx = index;
+		if(cnt >= SPEED[level]) begin
+			cnt_nx = 0;
+			if(index == 6) index_nx = 0;
+			else index_nx = index + 1;
+		end 
+		else cnt_nx = cnt + 1;
+	end
+
 	always @(*) begin
 		{vgaRed, vgaGreen, vgaBlue} = {12'h0}; // TODO:background
 
 		if( SX <= x_cnt && x_cnt < SX+BLOCK_SIZE*`BOARD_W && SY <= y_cnt && y_cnt < SY+BLOCK_SIZE*`BOARD_H) begin
 			// reserve some space between two blocks
-			if( 3<=x && x<17 && 3<=y && y<17) {vgaRed, vgaGreen, vgaBlue} = BRICK_COLOR[block_color_id];
+			if( 3<=x && x<17 && 3<=y && y<17) begin
+				if(block_color_id == 9) begin
+					{vgaRed, vgaGreen, vgaBlue} = BRICK_COLOR[1 + (index + (y-3)/2) % 7];
+				end
+				else {vgaRed, vgaGreen, vgaBlue} = BRICK_COLOR[block_color_id];
+			end
 		end
 	end
 

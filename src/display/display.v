@@ -8,6 +8,7 @@ module display(
 	input wire[`BRICK_LEN-1:0] cur_brick_type,
 	input wire[`BRICK_POS_LEN-1:0] cur_brick_pos,
 	input wire[`BRICK_POS_LEN-1:0] shadow_brick_pos,
+	input wire[`LEVEL_LEN-1:0] level,
 
 	output reg [3:0] vgaRed,
 	output reg [3:0] vgaGreen,
@@ -35,12 +36,15 @@ module display(
 
 	wire [3:0] vgaRed_playing, vgaGreen_playing, vgaBlue_playing;
 	display_playing playing(
+		.clk(clk),
+		.rst(rst),
 		.board(board),
 		.x_cnt(x_cnt),
 		.y_cnt(y_cnt),
 		.cur_brick_type(cur_brick_type),
 		.cur_brick_pos(cur_brick_pos),
 		.shadow_brick_pos(shadow_brick_pos),
+		.level(level),
 		.vgaRed(vgaRed_playing),
 		.vgaGreen(vgaGreen_playing),
 		.vgaBlue(vgaBlue_playing)
@@ -48,6 +52,8 @@ module display(
 
 	wire [3:0] vgaRed_start, vgaGreen_start, vgaBlue_start;
 	display_start start(
+		.clk(clk),
+		.rst(rst),
 		.x_cnt(x_cnt),
 		.y_cnt(y_cnt),
 		.vgaRed(vgaRed_start),
