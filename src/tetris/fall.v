@@ -26,7 +26,7 @@ module fall(
 		  1_000_000
 	};
 
-	reg [26:0] cnt, cnt_nx;
+	reg [33:0] cnt, cnt_nx;
 
 	wire rst_1plus;
 	oneplus inst_1plus_rst(.pb_debounced(rst), .pb_1pulse(rst_1plus), .clk(clk));
