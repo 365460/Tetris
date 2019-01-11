@@ -272,7 +272,7 @@ module test_score(
 				if(event_out[`EVENT_KEY_SPACE]) begin
 					event_received_nx[`EVENT_KEY_SPACE] = 1;
 
-					state_nx = WAIT;
+					state_nx = GEN_NEW_BLOCK;
 				end
 			end
 			WAIT: begin
